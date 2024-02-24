@@ -1,0 +1,17 @@
+.idea
+
+Tech.Api/bin
+Tech.Api/obj/Debug
+Tech.Api/obj/Release
+
+Tech.Application/bin
+Tech.Application/obj/Debug
+Tech.Application/obj/Release
+
+Tech.DAL/bin
+Tech.DAL/obj/Debug
+Tech.DAL/obj/Release
+
+Tech.Domain/bin
+Tech.Domain/obj/Release
+Tech.Domain/obj/Debug
