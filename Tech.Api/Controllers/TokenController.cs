@@ -9,6 +9,7 @@ namespace Tech.Api.Controllers;
 /// 
 /// </summary>
 
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class TokenController : Controller
 {
