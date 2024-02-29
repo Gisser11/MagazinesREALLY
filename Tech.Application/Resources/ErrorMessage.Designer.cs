@@ -123,6 +123,15 @@ namespace Tech.Application {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Роль уже существует.
+        /// </summary>
+        internal static string RoleAlreadyExists {
+            get {
+                return ResourceManager.GetString("RoleAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пользователь уже существует.
         /// </summary>
         internal static string UserAlreadyExists {

@@ -45,48 +45,38 @@ public class AuthService :IAuthService
             };
         }
 
-        try
+        var user = await _repository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
+
+        if (user != null)
         {
-            var user = await _repository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
-
-            if (user != null)
-            {
-                return new BaseResult<UserDto>()
-                {
-                    ErrorMessage = ErrorMessage.UserAlreadyExists,
-                    ErrorCode = (int)ErrorCode.UserAlreadyExists
-                };
-            }
-            var hasUserPassword = HashPassword(dto.Password);
-            user = new User()
-            {
-                Login = dto.Login,
-                Password = hasUserPassword
-            };
-
-            await _repository.CreateAsync(user);
-
             return new BaseResult<UserDto>()
             {
-                Data = _mapper.Map<UserDto>(user)
+                ErrorMessage = ErrorMessage.UserAlreadyExists,
+                ErrorCode = (int)ErrorCode.UserAlreadyExists
             };
         }
-        catch (Exception e)
+        var hasUserPassword = HashPassword(dto.Password);
+        user = new User()
         {
-            _logger.Error(e, e.Message);
-            return new BaseResult<UserDto>()
-            {
-                ErrorMessage = ErrorMessage.InternalServerError,
-                ErrorCode = (int)ErrorCode.InternalServerError
-            };
-        }
+            Login = dto.Login,
+            Password = hasUserPassword
+        };
+
+        await _repository.CreateAsync(user);
+
+        return new BaseResult<UserDto>()
+        {
+            Data = _mapper.Map<UserDto>(user)
+        };
     }
 
     public async Task<BaseResult<TokenDto>> Login(LoginUserDto dto)
     {
         try
         {
-            var user = await _repository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
+            var user = await _repository.GetAll()
+                .Include(x => x.Roles)
+                .FirstOrDefaultAsync(x => x.Login == dto.Login);
             if (user == null)
             {
                 return new BaseResult<TokenDto>()
@@ -106,12 +96,11 @@ public class AuthService :IAuthService
             }
 
             var userToken = await _userTokenRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id);
+            var userRoles = user.Roles;
 
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, "User")
-            };
+            var claims = userRoles.Select(x => new Claim(ClaimTypes.Role, x.Name)).ToList();
+            
+            claims.Add(new Claim(ClaimTypes.Name, user.Login));
             
             var accessToken = _tokenService.GenerateAccessToken(claims);
             

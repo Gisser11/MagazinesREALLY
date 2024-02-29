@@ -9,8 +9,11 @@ public enum ErrorCode
     InternalServerError = 10,
     UserAlreadyExists = 12,
     PasswordIsWrong = 13,
-    
+    UserNotAuthorized = 14,
     InvalidClientRequest = 20,
-    PasswordNotEquals = 21
+    PasswordNotEquals = 21,
+    
+    
+    RoleAlreadyExists = 31,
     
 }

@@ -38,4 +38,7 @@
     <data name="InvalidClientRequest" xml:space="preserve">
         <value>Ошибка при отправке токена</value>
     </data>
+    <data name="RoleAlreadyExists" xml:space="preserve">
+        <value>Роль уже существует</value>
+    </data>
 </root>

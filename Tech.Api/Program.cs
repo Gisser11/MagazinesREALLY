@@ -1,5 +1,6 @@
 using Serilog;
 using Tech.Api;
+using Tech.Api.Middlewares;
 using Tech.Application.DependencyInjection;
 using Tech.DAL.DependencyInjection;
 using Tech.Domain.Settings;
@@ -14,6 +15,8 @@ builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

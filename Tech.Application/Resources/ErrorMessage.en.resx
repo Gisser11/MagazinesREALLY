@@ -38,4 +38,7 @@
     <data name="InvalidClientRequest" xml:space="preserve">
         <value>Invalid Client Request</value>
     </data>
+    <data name="RoleAlreadyExists" xml:space="preserve">
+        <value>Role Already Exists</value>
+    </data>
 </root>

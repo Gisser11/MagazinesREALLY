@@ -27,7 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<UpdateReportDto>, UpdateReportValidator>();
         services.AddScoped<IReportService, ArticleService>();
         services.AddScoped<IAuthService, AuthService>();
-
+        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<ITokenService, TokenService>();
     }
 }
