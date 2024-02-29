@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tech.DAL.Interceptor;
 using Tech.DAL.Repositories;
-using Tech.Domain.Entity; 
-using Tech.Domain.Interfaces.Repostories;
+using Tech.Domain.Entity;
+using Tech.Domain.Interfaces.Databases;
+using Tech.Domain.Interfaces.Repositories;
 
 namespace Tech.DAL.DependencyInjection;
 
@@ -24,6 +25,7 @@ public static class DependencyInjection
 
     private static void InitRepositories(this IServiceCollection services)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWorks>();
         services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
         services.AddScoped<IBaseRepository<Role>, BaseRepository<Role>>();
         services.AddScoped<IBaseRepository<UserRole>, BaseRepository<UserRole>>();

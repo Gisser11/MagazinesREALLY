@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Tech.Domain.DTO;
 using Tech.Domain.Entity;
 using Tech.Domain.Enum;
-using Tech.Domain.Interfaces.Repostories;
+using Tech.Domain.Interfaces.Repositories;
 using Tech.Domain.Interfaces.Services;
 using Tech.Domain.Result;
 using Tech.Domain.Settings;
@@ -82,7 +82,9 @@ public class TokenService :ITokenService
         var newRefreshToken = GenerateRefreshToken();
 
         user.UserToken.RefreshToken = newRefreshToken;
-        await _userRepository.UpdateAsync(user);
+        
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
         
         return new BaseResult<TokenDto>()
         {

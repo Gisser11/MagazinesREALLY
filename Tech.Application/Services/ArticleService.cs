@@ -5,7 +5,7 @@ using Tech.Domain.DTO;
 using Tech.Domain.DTO.ReportDTO;
 using Tech.Domain.Entity;
 using Tech.Domain.Enum;
-using Tech.Domain.Interfaces.Repostories;
+using Tech.Domain.Interfaces.Repositories;
 using Tech.Domain.Interfaces.Services;
 using Tech.Domain.Interfaces.Validations;
 using Tech.Domain.Result;
@@ -163,8 +163,8 @@ public class ArticleService : IReportService
                 };
             }
 
-            await _reportRepository.RemoveAsync(report);
-
+            _reportRepository.Remove(report);
+            await _reportRepository.SaveChangesAsync();
             return new BaseResult<ReportDto>()
             {
                 Data = _mapper.Map<ReportDto>(report)
@@ -199,11 +199,11 @@ public class ArticleService : IReportService
 
             article.Name = dto.Name;
 
-            await _reportRepository.UpdateAsync(article);
-            
+            var updatedReport = _reportRepository.Update(article);
+            await _reportRepository.SaveChangesAsync();
             return new BaseResult<ReportDto>()
             {
-                Data = _mapper.Map<ReportDto>(article)
+                Data = _mapper.Map<ReportDto>(updatedReport)
             };
             
         }

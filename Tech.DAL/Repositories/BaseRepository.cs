@@ -1,4 +1,4 @@
-using Tech.Domain.Interfaces.Repostories;
+using Tech.Domain.Interfaces.Repositories;
 
 namespace Tech.DAL.Repositories;
 
@@ -16,37 +16,39 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return _db.Set<TEntity>();
     }
 
+    public async Task<int> SaveChangesAsync()
+    {
+        return await _db.SaveChangesAsync();
+    }
+    
     public async Task<TEntity> CreateAsync(TEntity entity)
     {
         if (entity == null)
             throw new ArgumentNullException("Entity is null");
         
         await _db.AddAsync(entity);
-        await _db.SaveChangesAsync();
 
         return entity;
     }
 
     
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
         if (entity == null)
             throw new ArgumentNullException("Entity is null");
         
         _db.Update(entity);
-        _db.SaveChanges();
 
-        return Task.FromResult(entity);
+        return entity;
     }
 
-    public Task<TEntity> RemoveAsync(TEntity entity)
+    public TEntity Remove(TEntity entity)
     {
         if (entity == null)
             throw new ArgumentNullException("Entity is null");
         
         _db.Remove(entity);
-        _db.SaveChanges();
 
-        return Task.FromResult(entity);
+        return entity;
     }
 }

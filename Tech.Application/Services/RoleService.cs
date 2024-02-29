@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Tech.Domain.DTO.Role;
 using Tech.Domain.Entity;
 using Tech.Domain.Enum;
-using Tech.Domain.Interfaces.Repostories;
+using Tech.Domain.Interfaces.Repositories;
 using Tech.Domain.Interfaces.Services;
 using Tech.Domain.Result;
 
@@ -63,7 +63,8 @@ public class RoleService : IRoleService
             };
         }
 
-        await _roleRepostiry.RemoveAsync(role);
+        _roleRepostiry.Remove(role);
+        await _roleRepostiry.SaveChangesAsync();
 
         return new BaseResult<Role>()
         {
