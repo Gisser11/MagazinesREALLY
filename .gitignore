@@ -1,17 +1,20 @@
+#папки IDE
 .idea
+.vs
 
-Tech.Api/bin
-Tech.Api/obj/Debug
-Tech.Api/obj/Release
+#папка логов
+FonTech.Api
 
-Tech.Application/bin
-Tech.Application/obj/Debug
-Tech.Application/obj/Release
+#папки релизов и временных файлов - нет им места на гитхабе, артём
+Tech.Api/bin/
+Tech.Api/obj/
 
-Tech.DAL/bin
-Tech.DAL/obj/Debug
-Tech.DAL/obj/Release
+Tech.Application/bin/
+Tech.Application/obj/
 
-Tech.Domain/bin
-Tech.Domain/obj/Release
-Tech.Domain/obj/Debug
+Tech.DAL/bin/
+Tech.DAL/obj/
+mydatabase.db
+Tech.Domain/bin/
+Tech.Domain/obj/
+Tech.Api/Tech.Api.csproj.user
