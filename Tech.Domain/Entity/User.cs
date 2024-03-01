@@ -2,8 +2,12 @@ using Tech.Domain.Interfaces;
 
 namespace Tech.Domain.Entity;
 
-public class User: IEntityId<long>, IAuditable
-{
+//test
+public class User/*aaaaa*/: IEntityId<long>, IAuditable
+{//teeest
+    //test
+    //test
+    //test
     public long Id { get; set; }
 
     public string Login { get; set; }
