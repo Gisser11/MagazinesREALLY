@@ -18,3 +18,7 @@ mydatabase.db
 Tech.Domain/bin/
 Tech.Domain/obj/
 Tech.Api/Tech.Api.csproj.user
+
+
+
+Tech.Api/mydatabase.db
