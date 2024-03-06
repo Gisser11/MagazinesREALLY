@@ -18,3 +18,6 @@ Tech.DAL/obj/
 Tech.Domain/bin/
 Tech.Domain/obj/
 Tech.Api/Tech.Api.csproj.user
+Tech.Api/mydatabase1.db
+Tech.Api/mydatabase1.db-shm
+Tech.Api/mydatabase1.db-wal
