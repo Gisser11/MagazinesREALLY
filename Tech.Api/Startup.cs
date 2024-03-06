@@ -1,8 +1,11 @@
 using System.Text;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using Tech.DAL;
 using Tech.Domain.Settings;
 
 namespace Tech.Api;
@@ -16,30 +19,11 @@ public static class Startup
     public static void AddAuthenticationAndAuthorization(this IServiceCollection services, WebApplicationBuilder builder)
     {
         services.AddAuthorization();
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(o =>
-        {
-            var options = builder.Configuration.GetSection(JwtSettings.DefaultSection).Get<JwtSettings>();
-            var jwtKey = options.JwtKey;
-            var issuer = options.Issuer;
-            var audience = options.Audience;
-            o.Authority = options.Authority;
-            o.RequireHttpsMetadata = false;
-            o.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidIssuer = issuer,
-                ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-                ValidateIssuer = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true
-            };
-        });
+        services.AddAuthentication();
+        services.AddIdentityApiEndpoints<IdentityUser>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
     }
+    
     /// <summary>
     /// Подключение сваггера
     /// </summary>
@@ -53,7 +37,6 @@ public static class Startup
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
                 options.AssumeDefaultVersionWhenUnspecified = true;
-                
             });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -64,32 +47,15 @@ public static class Startup
                 Title = "Tech v1",
                 Description = "This is v1",
             });
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
             {
                 In = ParameterLocation.Header,
                 Description = "Введите валидный токен",
                 Name = "Авторизация",
-                Type = SecuritySchemeType.Http,
-                BearerFormat = "JWT",
-                Scheme = "Bearer"
+                Type = SecuritySchemeType.ApiKey
             });
             
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme()
-                    {
-                        Reference = new OpenApiReference()
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Name = "Bearer",
-                        In = ParameterLocation.Header
-                    },
-                    Array.Empty<string>()
-                }
-            });
+            options.OperationFilter<SecurityRequirementsOperationFilter>();
         });
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Tech.Api;
 using Tech.Application.DependencyInjection;
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
 app.UseHttpsRedirection();
 
