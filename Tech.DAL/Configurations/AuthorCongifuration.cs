@@ -8,14 +8,26 @@ public class AuthorCongifuration : IEntityTypeConfiguration<Author>
 {
     public void Configure(EntityTypeBuilder<Author> builder)
     {
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        builder.Property(x => x.Country).IsRequired().HasMaxLength(30);
-        builder.Property(x => x.City).IsRequired();
-        builder.Property(x => x.WorkPosition).IsRequired();
-        
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.Country)
+            .IsRequired().HasMaxLength(30);
+
+        builder.Property(x => x.City)
+            .IsRequired();
+
+        builder.Property(x => x.WorkPosition)
+            .IsRequired();
+
+        //Настройка связей с Articles
         builder.HasMany<Article>(x => x.Articles)
             .WithOne(x => x.Author)
             .HasForeignKey(x => x.AuthorId)
             .HasPrincipalKey(x => x.Id);
+        
+        
     }
 }

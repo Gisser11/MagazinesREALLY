@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tech.Domain.DTO;
 using Tech.Domain.DTO.ReportDTO;
@@ -7,6 +8,7 @@ using Tech.Domain.Result;
 
 namespace Tech.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -22,7 +24,7 @@ public class ArticleController : ControllerBase
      [HttpGet("reports/{userId}")]
      [ProducesResponseType(StatusCodes.Status200OK)]
      [ProducesResponseType(StatusCodes.Status400BadRequest)]
-     public async Task<ActionResult<ReportDto>> GetUserReports(long userId)
+     public async Task<ActionResult<ReportDto>> GetUserReports(Guid userId)
      {
           var response = await _reportService.GetReportsAsync(userId);
           if (response.IsSuccess)
@@ -33,7 +35,7 @@ public class ArticleController : ControllerBase
           return BadRequest(response);
      }
     
-     [HttpGet]
+     /*[HttpGet]
      [ProducesResponseType(StatusCodes.Status200OK)]
      [ProducesResponseType(StatusCodes.Status400BadRequest)]
       public async Task<ActionResult<BaseResult<ReportDto>>> GetReport(int id)
@@ -87,5 +89,5 @@ public class ArticleController : ControllerBase
           }
 
           return BadRequest(response);
-     }
+     }*/
 }

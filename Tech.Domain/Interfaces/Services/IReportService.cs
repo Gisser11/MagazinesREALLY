@@ -14,23 +14,23 @@ public interface IReportService
     /// </summary>
     /// <param name="userId">Id Пользователя</param>
     /// <returns></returns>
-    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId);
+    Task<CollectionResult<ReportDto>> GetReportsAsync(Guid userId);
     
     /// <summary>
     /// Получение отчетов по ID 
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<BaseResult<ReportDto>> GetReportByIdAsync(int id);
+    //Task<BaseResult<ReportDto>> GetReportByIdAsync(int id);
 
     /// <summary>
     /// Создание отчета с базовыми параметрами
     /// </summary>
     /// <param name="createReportDto"></param>
     /// <returns></returns>
-    Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto);
+    //Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto);
 
-    Task<BaseResult<ReportDto>> DeleteReportAsync(long id);
+    //Task<BaseResult<ReportDto>> DeleteReportAsync(long id);
 
-    Task<BaseResult<ReportDto>> UpdateReportAsync(UpdateReportDto dto);
+    //Task<BaseResult<ReportDto>> UpdateReportAsync(UpdateReportDto dto);
 }

@@ -34,7 +34,7 @@ public class ExceptionHandlingMiddleware
 
         var response = exception switch
         {
-            UnauthorizedAccessException _ => new BaseResult() {ErrorMessage = exception.Message, ErrorCode = (int)ErrorCode.UserNotAuthorized},
+            UnauthorizedAccessException _ => new BaseResult() {ErrorMessage = exception.Message, ErrorCode = (int)ErrorCode.UserNotFound},
             _ => new BaseResult(){ErrorMessage = "Internal Server ЭРОР! ПЛИЗ РЕТРУ ЛАТЕР", ErrorCode = (int)ErrorCode.InternalServerError}
         };
 

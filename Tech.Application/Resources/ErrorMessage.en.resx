@@ -18,7 +18,7 @@
         <value>Article Not Found</value>
     </data>
     <data name="ReportsNotFound" xml:space="preserve">
-        <value>Reports Not Found</value>
+        <value>Articles Not Found</value>
     </data>
     <data name="ReportAlreadyExists" xml:space="preserve">
         <value>Article Already Exists</value>

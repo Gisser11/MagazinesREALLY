@@ -29,36 +29,24 @@ public class ArticleService : IReportService
         _mapper = mapper;
     }
 
-    public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
+    public async Task<CollectionResult<ReportDto>> GetReportsAsync(Guid userId)
     {
         ReportDto[] articles;
         
-        try
+        articles = await _reportRepository.GetAll()
+            .Where(x => x.Author.Id == userId)
+            .Select(x => new ReportDto(x.Id, x.Name, x.CreatedAt.ToLongDateString()))
+            .ToArrayAsync();
+
+        /*if (!reports.Any())
         {
-            articles = await _reportRepository.GetAll()
-                .Where(x => x.Author.Id == userId)
-                .Select(x => new ReportDto(x.Id, x.Name, x.CreatedAt.ToLongDateString()))
-                .ToArrayAsync();
-        }
-        catch (Exception e)
-        {
-            _logger.Error(e, e.Message);
+            _logger.Warning(ErrorMessage.ReportsNotFound, reports.Length);
             return new CollectionResult<ReportDto>()
             {
-                ErrorMessage = ErrorMessage.InternalServerError,
-                ErrorCode = (int)ErrorCode.InternalServerError,
+                ErrorMessage = ErrorMessage.ReportsNotFound,
+                ErrorCode = (int)ErrorCode.ReportsNotFound,
             };
-        }
-
-        // if (!reports.Any())
-        // {
-        //     _logger.Warning(ErrorMessage.ReportsNotFound, reports.Length);
-        //     return new CollectionResult<ReportDto>()
-        //     {
-        //         ErrorMessage = ErrorMessage.ReportsNotFound,
-        //         ErrorCode = (int)ErrorCode.ReportsNotFound,
-        //     };
-        // }
+        }*/
 
         return new CollectionResult<ReportDto>()
         {
@@ -67,7 +55,7 @@ public class ArticleService : IReportService
         };
     }
 
-    public Task<BaseResult<ReportDto>> GetReportByIdAsync(int id)
+    /*public Task<BaseResult<ReportDto>> GetReportByIdAsync(int id)
     {
         ReportDto? report;
         try
@@ -108,7 +96,8 @@ public class ArticleService : IReportService
     {
         try
         {
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == createReportDto.UserId);
+            throw new Exception();
+            /*var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == createReportDto.UserId);
             var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Name == createReportDto.Name);
             var result = _reportValidator.CreateValidator(report, user);
             if (!result.IsSuccess)
@@ -131,7 +120,7 @@ public class ArticleService : IReportService
             return new BaseResult<ReportDto>()
             {
                 Data = _mapper.Map<ReportDto>(report)
-            };
+            };#1#
         }
         catch (Exception e)
         {
@@ -214,5 +203,5 @@ public class ArticleService : IReportService
                 ErrorCode = (int)ErrorCode.InternalServerError,
             };
         }
-    }
+    }*/
 }

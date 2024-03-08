@@ -2,9 +2,9 @@ using Tech.Domain.Interfaces;
 
 namespace Tech.Domain.Entity;
 
-public class Article: IEntityId<long>, IAuditable
+public class Article: IEntityId<Guid>, IAuditable
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
@@ -21,7 +21,7 @@ public class Article: IEntityId<long>, IAuditable
 
     public Author Author { get; set; }
 
-    public long AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
     
     public DateTime CreatedAt { get; set; }
     

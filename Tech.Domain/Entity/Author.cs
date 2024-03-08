@@ -2,11 +2,11 @@ using Tech.Domain.Interfaces;
 
 namespace Tech.Domain.Entity;
 
-public class Author : IEntityId<long>
+public class Author : IEntityId<Guid>
 {
-    public long Id { get; set; }
+    public Guid Id { get; set; }
 
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     public string WorkPlace { get; set; }
     
