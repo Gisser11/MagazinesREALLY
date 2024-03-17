@@ -3,9 +3,10 @@ using Tech.Domain.Interfaces;
 
 namespace Tech.Domain.Entity;
 
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
-    //public List<Article> Articles { get; set; }
+    public ICollection<Author> Authors { get; set; }
     
-    public Author Author { get; set; }
+    public ICollection<Article> Articles { get; set; }
 }
+

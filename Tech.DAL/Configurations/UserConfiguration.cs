@@ -8,10 +8,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-
-        builder.HasOne(u => u.Author)
+        builder.HasMany(u => u.Authors)
             .WithOne(a => a.User)
-            .HasForeignKey<Author>(a => a.UserId)
-            .HasPrincipalKey<User>(u => u.Id);
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
+        builder.HasMany(u => u.Articles)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

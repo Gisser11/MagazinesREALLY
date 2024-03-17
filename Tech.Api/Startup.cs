@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Tech.DAL;
+using Tech.Domain.Entity;
 using Tech.Domain.Settings;
 
 namespace Tech.Api;
@@ -20,8 +21,9 @@ public static class Startup
     {
         services.AddAuthorization();
         services.AddAuthentication();
-        services.AddIdentityApiEndpoints<IdentityUser>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddIdentity<User, IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager<SignInManager<User>>();
     }
     
     /// <summary>

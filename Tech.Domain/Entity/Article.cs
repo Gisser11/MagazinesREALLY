@@ -7,8 +7,7 @@ public class Article: IEntityId<Guid>, IAuditable
     public Guid Id { get; set; }
 
     public string Name { get; set; }
-
-
+    
     public string RuClassifierArticle { get; set; }
 
     public string DigitalObjId { get; set; }
@@ -18,10 +17,10 @@ public class Article: IEntityId<Guid>, IAuditable
     public int TextId { get; set; }
 
     public string[] KeyWords { get; set; }
-
-    public Author Author { get; set; }
-
-    public Guid AuthorId { get; set; }
+    
+    public Guid UserId { get; set; }
+    
+    public User User { get; set; }
     
     public DateTime CreatedAt { get; set; }
     

@@ -1,6 +1,6 @@
 namespace Tech.Domain.Interfaces;
 
-public interface IEntityId<T> where T : struct
+public class IEntityId<T> where T : struct
 {
     public T Id { get; set; }
 }

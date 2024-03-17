@@ -20,7 +20,7 @@ public class Author : IEntityId<Guid>
     
     public int ElibraryId { get; set; }
     
-    public User User { get; set; } = null!;
+    public User User { get; set; }
 
     public ICollection<Article> Articles { get; } = new List<Article>();
 }

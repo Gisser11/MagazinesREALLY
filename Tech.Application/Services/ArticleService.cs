@@ -31,23 +31,15 @@ public class ArticleService : IReportService
 
     public async Task<CollectionResult<ReportDto>> GetReportsAsync(Guid userId)
     {
-        ReportDto[] articles;
         
-        articles = await _reportRepository.GetAll()
-            .Where(x => x.Author.Id == userId)
+        var articles = await _reportRepository.GetAll()
+            .Where(x => x.UserId == userId)
             .Select(x => new ReportDto(x.Id, x.Name, x.CreatedAt.ToLongDateString()))
             .ToArrayAsync();
 
-        /*if (!reports.Any())
-        {
-            _logger.Warning(ErrorMessage.ReportsNotFound, reports.Length);
-            return new CollectionResult<ReportDto>()
-            {
-                ErrorMessage = ErrorMessage.ReportsNotFound,
-                ErrorCode = (int)ErrorCode.ReportsNotFound,
-            };
-        }*/
-
+        // если репортов не найдено, выдать exception. 
+        
+        Console.Write("sdkfsdkfm");
         return new CollectionResult<ReportDto>()
         {
             Data = articles,
