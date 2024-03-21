@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Tech.Domain.DTO;
 using Tech.Domain.DTO.User;
+using Tech.Domain.Entity;
 using Tech.Domain.Interfaces.Services;
 using Tech.Domain.Result;
 
@@ -13,10 +14,10 @@ namespace Tech.Application.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
 
-    public AuthService(UserManager<IdentityUser> userManager, IConfiguration configuration)
+    public AuthService(UserManager<User> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -25,7 +26,7 @@ public class AuthService : IAuthService
     public async Task<BaseResult<UserDto>> Register(RegisterUserDto dto)
     {
         //TODO валидация пароля. (Pass and PassConfirm)
-        var identityUser = new IdentityUser
+        var identityUser = new User
         {
             Email = dto.Email,
             UserName = dto.Login
@@ -83,4 +84,5 @@ public class AuthService : IAuthService
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
     }
+    
 }

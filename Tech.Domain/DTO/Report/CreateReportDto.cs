@@ -1,3 +1,3 @@
 namespace Tech.Domain.DTO.ReportDTO;
 
-public record CreateReportDto(string Name, string Description, long UserId);
+public record CreateReportDto(string Name, string Description);

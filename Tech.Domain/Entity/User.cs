@@ -3,11 +3,9 @@ using Tech.Domain.Interfaces;
 
 namespace Tech.Domain.Entity;
 
-public class User
+public class User : IdentityUser<long>
 {
-    public Guid Id { get; set; }
-    
-    public string IdentityId { get; set; }
+    public string PROVERKAJIEEEEST { get; set; }
     
     public ICollection<Author> Authors { get; set; }
     

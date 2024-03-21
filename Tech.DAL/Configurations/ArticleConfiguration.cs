@@ -10,24 +10,27 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
     {
         builder.HasKey(x => x.Id);
         
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd();
+        
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(100);
-        Guid guid = new Guid("4bdb28b6-7d8b-4365-ac57-812ad34fe9a4");
-        builder.HasData(new List<Article>()
+
+        /*builder.HasData(new List<Article>()
         {
             new Article()
             {
-                Id = new Guid("864419b1-0479-49be-86ab-67bb0a6d9ec5"),
-                UserId = guid,
+                Id = 1,
+                UserId = 1,
                 Name = "Name1"
             },
             new Article()
             {
-                Id = new Guid("864419b1-0479-49be-86ab-67bb0a6d9ec6"),
-                UserId = guid,
+                Id = 2,
+                UserId = 1,
                 Name = "Name2"
             }
-        });
+        });*/
     }
 }

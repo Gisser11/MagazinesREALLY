@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Tech.Application.Mapping;
@@ -7,6 +8,7 @@ using Tech.Application.Validations;
 using Tech.Application.Validations.FluentValidations;
 using Tech.Application.Validations.FluentValidations.Report;
 using Tech.Domain.DTO.ReportDTO;
+using Tech.Domain.Entity;
 using Tech.Domain.Interfaces.Services;
 using Tech.Domain.Interfaces.Validations;
 
@@ -27,5 +29,6 @@ public static class DependencyInjection
         services.AddScoped<IValidator<UpdateReportDto>, UpdateReportValidator>();
         services.AddScoped<IReportService, ArticleService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<UserManager<User>>();
     }
 }

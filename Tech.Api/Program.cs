@@ -1,13 +1,7 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Tech.Api;
 using Tech.Application.DependencyInjection;
-using Tech.DAL;
 using Tech.DAL.DependencyInjection;
-using Tech.Domain.Entity;
 using Tech.Domain.Settings;
 
 var builder = WebApplication.CreateBuilder(args);

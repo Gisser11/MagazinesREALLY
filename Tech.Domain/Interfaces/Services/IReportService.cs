@@ -12,9 +12,9 @@ public interface IReportService
     /// <summary>
     /// Получение всех отчетов пользователя
     /// </summary>
-    /// <param name="userId">Id Пользователя</param>
+    /// <param name="email">Id Пользователя</param>
     /// <returns></returns>
-    Task<CollectionResult<ReportDto>> GetReportsAsync(Guid userId);
+    Task<CollectionResult<ReportDto>> GetReportsAsync(string email);
     
     /// <summary>
     /// Получение отчетов по ID 
@@ -27,8 +27,9 @@ public interface IReportService
     /// Создание отчета с базовыми параметрами
     /// </summary>
     /// <param name="createReportDto"></param>
+    /// <param name="email"></param>
     /// <returns></returns>
-    //Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto);
+    Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto, string email);
 
     //Task<BaseResult<ReportDto>> DeleteReportAsync(long id);
 

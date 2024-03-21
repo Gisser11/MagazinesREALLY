@@ -11,11 +11,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
         
-        builder.HasMany(u => u.Authors)
+        /*builder.HasMany(u => u.Authors)
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-            
+            */
         builder.HasMany(u => u.Articles)
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserId)

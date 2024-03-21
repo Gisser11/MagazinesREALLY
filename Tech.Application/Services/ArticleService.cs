@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Tech.Domain.DTO;
@@ -16,35 +17,69 @@ public class ArticleService : IReportService
 {
     private readonly IBaseRepository<Article> _reportRepository;
     private readonly IBaseRepository<User> _userRepository;
-    private readonly IReportValidator _reportValidator;
-    private readonly IMapper _mapper;
-    private readonly ILogger _logger;
-    public ArticleService(IBaseRepository<Article> reportRepository, ILogger logger, IBaseRepository<User> userRepository, 
-        IReportValidator reportValidator, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+    public ArticleService(IBaseRepository<Article> reportRepository, IBaseRepository<User> userRepository,
+         UserManager<User> userManager)
     {
         _reportRepository = reportRepository;
-        _logger = logger;
         _userRepository = userRepository;
-        _reportValidator = reportValidator;
-        _mapper = mapper;
+        _userManager = userManager;
     }
 
-    public async Task<CollectionResult<ReportDto>> GetReportsAsync(Guid userId)
+    public async Task<CollectionResult<ReportDto>> GetReportsAsync(string email)
     {
+        var identityUser = await _userManager.FindByEmailAsync(email);
+        
+        if (identityUser is null)
+        {
+            throw new UnauthorizedAccessException();
+        } 
         
         var articles = await _reportRepository.GetAll()
-            .Where(x => x.UserId == userId)
-            .Select(x => new ReportDto(x.Id, x.Name, x.CreatedAt.ToLongDateString()))
+            .Where(x => x.UserId == identityUser.Id)
+            .Select(x => new ReportDto(x.Id, x.Name))
             .ToArrayAsync();
-
-        // если репортов не найдено, выдать exception. 
         
-        Console.Write("sdkfsdkfm");
         return new CollectionResult<ReportDto>()
         {
             Data = articles,
             Count = articles.Length
         };
+    }
+    public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto, string email)
+    {
+        var identityUser = await _userManager.FindByEmailAsync(email);
+        
+        if (identityUser is null)
+        {
+            throw new UnauthorizedAccessException();
+        } 
+        //var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Name == createReportDto.Name);
+        
+        /*var result = _reportValidator.CreateValidator(report, user);
+        if (!result.IsSuccess)
+        {
+            return new BaseResult<ReportDto>()
+            {
+                ErrorCode = result.ErrorCode,
+                ErrorMessage = result.ErrorMessage
+            };
+        }
+        */
+
+        var report = new Article()
+        {
+            Name = createReportDto.Name,
+            UserId = identityUser.Id
+        };
+
+        await _reportRepository.CreateAsync(report);
+
+        return new BaseResult<ReportDto>()
+        {
+            Data = null
+        };
+
     }
 
     /*public Task<BaseResult<ReportDto>> GetReportByIdAsync(int id)
@@ -56,7 +91,7 @@ public class ArticleService : IReportService
                 .AsEnumerable()
                 .Select(x => new ReportDto(x.Id, x.Name, x.CreatedAt.ToLongDateString()))
                 .FirstOrDefault(x => x.Id == id);
-            
+
         }
         catch (Exception e)
         {
@@ -81,49 +116,10 @@ public class ArticleService : IReportService
         {
             Data = report
         });
-        
+
     }
 
-    public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto createReportDto)
-    {
-        try
-        {
-            throw new Exception();
-            /*var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == createReportDto.UserId);
-            var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Name == createReportDto.Name);
-            var result = _reportValidator.CreateValidator(report, user);
-            if (!result.IsSuccess)
-            {
-                return new BaseResult<ReportDto>()
-                {
-                    ErrorCode = result.ErrorCode,
-                    ErrorMessage = result.ErrorMessage
-                };
-            }
 
-            report = new Article()
-            {
-                Name = createReportDto.Name,
-                UpdatedAt = DateTime.UtcNow,
-                UpdatedBy = 1
-            };
-
-            await _reportRepository.CreateAsync(report);
-            return new BaseResult<ReportDto>()
-            {
-                Data = _mapper.Map<ReportDto>(report)
-            };#1#
-        }
-        catch (Exception e)
-        {
-            _logger.Error(e, e.Message);
-            return new BaseResult<ReportDto>()
-            {
-                ErrorMessage = ErrorMessage.InternalServerError,
-                ErrorCode = (int)ErrorCode.InternalServerError,
-            };
-        }
-    }
 
     public async Task<BaseResult<ReportDto>> DeleteReportAsync(long id)
     {
@@ -131,7 +127,7 @@ public class ArticleService : IReportService
         {
             var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
             var result = _reportValidator.ValidateOnNull(report);
-            
+
             if (!result.IsSuccess)
             {
                 return new BaseResult<ReportDto>()
@@ -164,7 +160,7 @@ public class ArticleService : IReportService
         try
         {
             var article = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dto.Id);
-            
+
             var result = _reportValidator.ValidateOnNull(article);
             if (!result.IsSuccess)
             {
@@ -178,14 +174,14 @@ public class ArticleService : IReportService
             article.Name = dto.Name;
 
             await _reportRepository.UpdateAsync(article);
-            
+
             return new BaseResult<ReportDto>()
             {
                 Data = _mapper.Map<ReportDto>(article)
             };
-            
+
         }
-        
+
         catch (Exception e)
         {
             _logger.Error(e, e.Message);

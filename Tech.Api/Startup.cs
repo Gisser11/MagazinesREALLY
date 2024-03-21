@@ -20,21 +20,24 @@ namespace Tech.Api
             var jwtKey = options.JwtKey;
             var issuer = options.Issuer;
             var audience = options.Audience;
+            
             services.AddAuthorization();
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            
+            services.AddIdentity<User, IdentityRole<long>>(identityOptions =>
                 {
-                    options.Password.RequiredLength = 5;
+                    identityOptions.Password.RequiredLength = 5;
     
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            services.AddAuthentication(o =>
+            
+            services.AddAuthentication(authOptions =>
             {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwtOptions =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters()
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateActor = true,
                     ValidateIssuer = true,
@@ -51,18 +54,19 @@ namespace Tech.Api
         public static void AddSwagger(this IServiceCollection services)
         {
             services.AddApiVersioning()
-                .AddApiExplorer(options =>
+                .AddApiExplorer(versionApiOptions =>
                 {
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.GroupNameFormat = "'v'VVV";
-                    options.SubstituteApiVersionInUrl = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    versionApiOptions.DefaultApiVersion = new ApiVersion(1, 0);
+                    versionApiOptions.GroupNameFormat = "'v'VVV";
+                    versionApiOptions.SubstituteApiVersionInUrl = true;
+                    versionApiOptions.AssumeDefaultVersionWhenUnspecified = true;
                 });
 
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
+            
+            services.AddSwaggerGen(swaggerOptions =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo()
+                swaggerOptions.SwaggerDoc("v1", new OpenApiInfo()
                 {
                     Version = "v1",
                     Title = "Tech v1",

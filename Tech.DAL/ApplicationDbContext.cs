@@ -8,7 +8,7 @@ using Tech.Domain.Entity;
 
 namespace Tech.DAL;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<long>, long>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -17,7 +17,7 @@ public class ApplicationDbContext : IdentityDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new DateInterceptor(), new UserSaveChangesInterceptor());
+        optionsBuilder.AddInterceptors(new DateInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
