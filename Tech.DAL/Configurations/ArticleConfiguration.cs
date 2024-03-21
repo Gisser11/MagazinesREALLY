@@ -13,7 +13,7 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(100);
-        /*Guid guid = new Guid("864419b1-0479-49be-86ab-67bb0a6d9ec2");
+        Guid guid = new Guid("4bdb28b6-7d8b-4365-ac57-812ad34fe9a4");
         builder.HasData(new List<Article>()
         {
             new Article()
@@ -28,6 +28,6 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
                 UserId = guid,
                 Name = "Name2"
             }
-        });*/
+        });
     }
 }

@@ -1,4 +1,6 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tech.Domain.DTO;
@@ -8,7 +10,7 @@ using Tech.Domain.Result;
 
 namespace Tech.Api.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -21,11 +23,12 @@ public class ArticleController : ControllerBase
           _reportService = reportService;
      }
      
-     [HttpGet("reports/{userId}")]
+     [HttpGet("reports")]
      [ProducesResponseType(StatusCodes.Status200OK)]
      [ProducesResponseType(StatusCodes.Status400BadRequest)]
-     public async Task<ActionResult<ReportDto>> GetUserReports(Guid userId)
+     public async Task<ActionResult<ReportDto>> GetUserReports()
      {
+          var userId = new Guid("d4011776-c512-4b75-9877-fe981c05bbbc");
           var response = await _reportService.GetReportsAsync(userId);
           if (response.IsSuccess)
           {

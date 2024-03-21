@@ -8,17 +8,16 @@ using Tech.Domain.Entity;
 
 namespace Tech.DAL;
 
-public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new DateInterceptor());
+        optionsBuilder.AddInterceptors(new DateInterceptor(), new UserSaveChangesInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
