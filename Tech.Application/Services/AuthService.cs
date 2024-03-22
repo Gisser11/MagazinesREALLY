@@ -31,13 +31,24 @@ public class AuthService : IAuthService
             Email = dto.Email,
             UserName = dto.Login
         };
+        
+        //через встренный identity репозиторий заносим в бд юзера
+        var result = await _userManager.CreateAsync(identityUser, dto.Password);
 
-        await _userManager.CreateAsync(identityUser, dto.Password);
-
-        return new BaseResult<UserDto>
+        if (result.Succeeded)
         {
-            Data = null
-        };
+            var userDto = new UserDto
+            {
+                Response = "Пользователь с почтой " + dto.Email + " успешно создан"
+            };
+            
+            return new BaseResult<UserDto>
+            {
+                Data = userDto
+            };
+        }
+
+        throw new Exception(result.Errors.ToString());
     }
 
     public async Task<BaseResult<TokenDto>> Login(LoginUserDto dto)

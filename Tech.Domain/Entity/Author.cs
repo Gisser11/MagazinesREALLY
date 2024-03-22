@@ -22,5 +22,4 @@ public class Author : IEntityId<Guid>
     
     public User User { get; set; }
 
-    public ICollection<Article> Articles { get; } = new List<Article>();
 }
